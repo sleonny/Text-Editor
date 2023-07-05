@@ -26,5 +26,26 @@ warmStrategyCache({
 
 registerRoute(({ request }) => request.mode === 'navigate', pageCache);
 
-// TODO: Implement asset caching
+const { StaleWhileRevalidate } = require('workbox-strategies');
+
+registerRoute(
+  ({request}) => request.destination === 'script' || request.destination === 'style',
+  new StaleWhileRevalidate({
+    cacheName: 'static-resources',
+  })
+);
+
+registerRoute(
+  ({request}) => request.destination === 'image',
+  new CacheFirst({
+    cacheName: 'images',
+    plugins: [
+      new ExpirationPlugin({
+        maxEntries: 60,
+        maxAgeSeconds: 30 * 24 * 60 * 60,
+      }),
+    ],
+  })
+);
+
 registerRoute();

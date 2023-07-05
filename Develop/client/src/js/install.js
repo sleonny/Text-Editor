@@ -8,7 +8,7 @@ window.addEventListener("beforeinstallprompt", (event) => {
   buttonInstall.style.display = "block";
 });
 
-butInstall.addEventListener("click", async () => {
+buttonInstall.addEventListener("click", async () => {
   buttonInstall.style.display = "none";
   deferredPrompt.prompt();
   const { outcome } = await deferredPrompt.userChoice;
